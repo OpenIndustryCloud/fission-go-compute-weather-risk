@@ -18,6 +18,7 @@ for any given date and city
 */
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -65,7 +66,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 400)
 		return
 	}
-
+	fmt.Println(string(weatherRiskDataJSON))
 	w.Header().Set("content-type", "application/json")
 	w.Write([]byte(string(weatherRiskDataJSON)))
 
@@ -97,8 +98,8 @@ type DailySummary struct {
 	Minwspdm     string `json:"minwspdm"`
 }
 
-// func main() {
-// 	println("staritng app..")
-// 	http.HandleFunc("/", Handler)
-// 	http.ListenAndServe(":8088", nil)
-// }
+func main() {
+	println("staritng app..")
+	http.HandleFunc("/", Handler)
+	http.ListenAndServe(":8088", nil)
+}

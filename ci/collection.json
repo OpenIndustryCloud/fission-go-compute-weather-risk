@@ -1,0 +1,59 @@
+{
+	"info": {
+		"name": "weather-risk",
+		"_postman_id": "f64e16e1-9bfc-3e4b-dcda-449ed025d20b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-weather-risk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Echo - Correct HTTP Code\", function() {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"Echo - Received JSON back\", function() {",
+							"    pm.response.to.be.json;",
+							"})",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"response\": {\n        \"version\": \"0.1\"\n    },\n    \"history\": {\n        \"dailysummary\": [\n            {\n                \"fog\": \"0\",\n                \"rain\": \"1\",\n                \"maxtempm\": \"17\",\n                \"mintempm\": \"12\",\n                \"tornado\": \"0\",\n                \"maxpressurem\": \"1014\",\n                \"minpressurem\": \"1005\",\n                \"maxwspdm\": \"50\",\n                \"minwspdm\": \"13\"\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "http://fission.landg.madeden.net/get-weather-risk",
+					"protocol": "http",
+					"host": [
+						"fission",
+						"landg",
+						"madeden",
+						"net"
+					],
+					"path": [
+						"get-weather-risk"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
