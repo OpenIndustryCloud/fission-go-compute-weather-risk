@@ -1,4 +1,10 @@
 groups:
+# - name: experimentation
+#   jobs: 
+#   - test-pr
+#   - release
+#   - create-pr
+
 
 resource_types:
 # https://github.com/cloudfoundry-community/slack-notification-resource
@@ -22,7 +28,7 @@ resources:
 - name: fission-function-src
   type: git
   source:
-    uri: git@github.com:OpenIndustryCloud/fission-go-compute-weather-risk.git
+    uri: git@github.com:OpenIndustryCloud/fission-go-form-req-transformer.git
     branch: master
     disable_ci_skip: true
     private_key: ((gh-ssh-key))
@@ -78,7 +84,7 @@ resources:
   source:
     access_token: ((gh-access-token))
     private_key: ((gh-ssh-key))
-    repo: OpenIndustryCloud/fission-go-compute-weather-risk
+    repo: OpenIndustryCloud/fission-go-form-req-transformer
     base: master
 - name: fission-function-merge-pr
   type: pull-request-test
@@ -86,7 +92,7 @@ resources:
     access_token: ((gh-access-token))
     private_key: ((gh-ssh-key))
     base: test-merge
-    repo: OpenIndustryCloud/fission-go-compute-weather-risk
+    repo: OpenIndustryCloud/fission-go-form-req-transformer
 
 jobs:
 #####################################################################
@@ -112,7 +118,7 @@ jobs:
       task-src: oic-ci-tasks-src
       function-src: fission-function-src
     params:
-      REPOTOKEN: ((go-compute-weather-risk-token))
+      REPOTOKEN: ((go-form-req-transformer-token))
   - task: build
     image: docker-image-go-builder
     file: oic-ci-tasks-src/function/build/build_function.yaml
@@ -121,8 +127,8 @@ jobs:
       function-src: fission-function-src
     params:
       FUNCTION_ENVIRONMENT: go
-      FUNCTION_NAME: compute-weather-risk
-      CODE_PATH: function-src/compute-weather-risk.go
+      FUNCTION_NAME: form-req-transformer
+      CODE_PATH: function-src/form-req-transformer.go
   - task: publish-function-to-staging
     image: docker-image-fission-cli
     file: oic-ci-tasks-src/function/publish/publish_function.yaml
@@ -130,9 +136,9 @@ jobs:
       ENVIRONMENT: staging
       FISSION_URL: ((fission-url))
       FISSION_ROUTER: ((fission-router))
-      FUNCTION_NAME: compute-weather-risk
+      FUNCTION_NAME: form-req-transformer
       FUNCTION_ENVIRONMENT: go
-      CODE_PATH: function-src/compute-weather-risk.so
+      CODE_PATH: function-src/form-req-transformer.so
       FUNCTION_METHOD: POST
     input_mapping: 
       task-src: oic-ci-tasks-src
@@ -148,7 +154,7 @@ jobs:
       FISSION_ROUTER: ((fission-router))
       ENVIRONMENT: staging
       COLLECTION: function-src/ci/collection.json
-      FUNCTION_NAME: compute-weather-risk
+      FUNCTION_NAME: form-req-transformer
       PROTOCOL: http
       TARGET_PORT: 80
       FUNCTION_METHOD: POST
@@ -159,7 +165,7 @@ jobs:
       ENVIRONMENT: staging
       FISSION_URL: ((fission-url))
       FISSION_ROUTER: ((fission-router))
-      FUNCTION_NAME: compute-weather-risk
+      FUNCTION_NAME: form-req-transformer
       FUNCTION_ENVIRONMENT: go
       FUNCTION_METHOD: POST
     input_mapping: 
@@ -196,7 +202,7 @@ jobs:
       task-src: oic-ci-tasks-src
     params:
       GITHUB_ACCESS_TOKEN: ((gh-access-token))
-      REPO_NAME: OpenIndustryCloud/fission-go-compute-weather-risk
+      REPO_NAME: OpenIndustryCloud/fission-go-form-req-transformer
       BASE_BRANCH: test-merge
 
 - name: merge-pr
@@ -218,14 +224,16 @@ jobs:
   - get: fission-function-pr
     trigger: true
     version: every
+  - get: docker-image-go-ci
   - get: oic-ci-tasks-src
   - task: coverage
+    image: docker-image-go-ci
     file: oic-ci-tasks-src/go/coverage/coverage.yaml
     input_mapping: 
       task-src: oic-ci-tasks-src
-      function-src: fission-function-src
+      function-src: fission-function-pr
     params:
-      REPOTOKEN: ((go-compute-weather-risk-token))
+      REPOTOKEN: ((go-form-req-transformer-token))
     on_success:
       put: fission-function-pr
       params:
