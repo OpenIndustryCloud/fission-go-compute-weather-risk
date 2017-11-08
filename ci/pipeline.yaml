@@ -118,7 +118,7 @@ jobs:
       task-src: oic-ci-tasks-src
       function-src: fission-function-src
     params:
-      REPOTOKEN: ((go-form-req-transformer-token))
+      REPOTOKEN: ((go-compute-weather-risk-token))
   - task: build
     image: docker-image-go-builder
     file: oic-ci-tasks-src/function/build/build_function.yaml
@@ -233,7 +233,7 @@ jobs:
       task-src: oic-ci-tasks-src
       function-src: fission-function-pr
     params:
-      REPOTOKEN: ((go-form-req-transformer-token))
+      REPOTOKEN: ((go-compute-weather-risk-token))
     on_success:
       put: fission-function-pr
       params:
