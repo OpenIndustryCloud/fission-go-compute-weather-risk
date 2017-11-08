@@ -119,6 +119,10 @@ jobs:
       function-src: fission-function-src
     params:
       REPOTOKEN: ((go-compute-weather-risk-token))
+      KUBERNETES_SERVICE_PORT: ((kubernetes-service-port))
+      KUBERNETES_SERVICE_HOST: ((kubernetes-service-host))
+      KUBERNETES_CA: ((kubernetes-ca))
+      KUBERNETES_TOKEN: ((kubernetes-token))
   - task: build
     image: docker-image-go-builder
     file: oic-ci-tasks-src/function/build/build_function.yaml
@@ -234,6 +238,10 @@ jobs:
       function-src: fission-function-pr
     params:
       REPOTOKEN: ((go-compute-weather-risk-token))
+      KUBERNETES_SERVICE_PORT: ((kubernetes-service-port))
+      KUBERNETES_SERVICE_HOST: ((kubernetes-service-host))
+      KUBERNETES_CA: ((kubernetes-ca))
+      KUBERNETES_TOKEN: ((kubernetes-token))
     on_success:
       put: fission-function-pr
       params:
