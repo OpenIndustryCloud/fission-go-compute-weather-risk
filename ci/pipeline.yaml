@@ -28,7 +28,7 @@ resources:
 - name: fission-function-src
   type: git
   source:
-    uri: git@github.com:OpenIndustryCloud/fission-go-form-req-transformer.git
+    uri: git@github.com:OpenIndustryCloud/fission-go-compute-weather-risk.git
     branch: master
     disable_ci_skip: true
     private_key: ((gh-ssh-key))
@@ -84,7 +84,7 @@ resources:
   source:
     access_token: ((gh-access-token))
     private_key: ((gh-ssh-key))
-    repo: OpenIndustryCloud/fission-go-form-req-transformer
+    repo: OpenIndustryCloud/fission-go-compute-weather-risk
     base: master
 - name: fission-function-merge-pr
   type: pull-request-test
@@ -92,7 +92,7 @@ resources:
     access_token: ((gh-access-token))
     private_key: ((gh-ssh-key))
     base: test-merge
-    repo: OpenIndustryCloud/fission-go-form-req-transformer
+    repo: OpenIndustryCloud/fission-go-compute-weather-risk
 
 jobs:
 #####################################################################
@@ -127,8 +127,8 @@ jobs:
       function-src: fission-function-src
     params:
       FUNCTION_ENVIRONMENT: go
-      FUNCTION_NAME: form-req-transformer
-      CODE_PATH: function-src/form-req-transformer.go
+      FUNCTION_NAME: compute-weather-risk
+      CODE_PATH: function-src/compute-weather-risk.go
   - task: publish-function-to-staging
     image: docker-image-fission-cli
     file: oic-ci-tasks-src/function/publish/publish_function.yaml
@@ -136,9 +136,9 @@ jobs:
       ENVIRONMENT: staging
       FISSION_URL: ((fission-url))
       FISSION_ROUTER: ((fission-router))
-      FUNCTION_NAME: form-req-transformer
+      FUNCTION_NAME: compute-weather-risk
       FUNCTION_ENVIRONMENT: go
-      CODE_PATH: function-src/form-req-transformer.so
+      CODE_PATH: function-src/compute-weather-risk.so
       FUNCTION_METHOD: POST
     input_mapping: 
       task-src: oic-ci-tasks-src
@@ -154,7 +154,7 @@ jobs:
       FISSION_ROUTER: ((fission-router))
       ENVIRONMENT: staging
       COLLECTION: function-src/ci/collection.json
-      FUNCTION_NAME: form-req-transformer
+      FUNCTION_NAME: compute-weather-risk
       PROTOCOL: http
       TARGET_PORT: 80
       FUNCTION_METHOD: POST
@@ -165,7 +165,7 @@ jobs:
       ENVIRONMENT: staging
       FISSION_URL: ((fission-url))
       FISSION_ROUTER: ((fission-router))
-      FUNCTION_NAME: form-req-transformer
+      FUNCTION_NAME: compute-weather-risk
       FUNCTION_ENVIRONMENT: go
       FUNCTION_METHOD: POST
     input_mapping: 
@@ -202,7 +202,7 @@ jobs:
       task-src: oic-ci-tasks-src
     params:
       GITHUB_ACCESS_TOKEN: ((gh-access-token))
-      REPO_NAME: OpenIndustryCloud/fission-go-form-req-transformer
+      REPO_NAME: OpenIndustryCloud/fission-go-compute-weather-risk
       BASE_BRANCH: test-merge
 
 - name: merge-pr
