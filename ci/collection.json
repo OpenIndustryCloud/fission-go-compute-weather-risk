@@ -1,13 +1,13 @@
 {
 	"info": {
-		"name": "form-req-transformer",
-		"_postman_id": "040ae189-81d4-d081-07bb-af70fba89005",
+		"name": "weather-risk",
+		"_postman_id": "f64e16e1-9bfc-3e4b-dcda-449ed025d20b",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "transform-req",
+			"name": "get-weather-risk",
 			"event": [
 				{
 					"listen": "test",
@@ -30,16 +30,16 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Content-Type",
-						"value": "application/json"
+						"key": "Authorization",
+						"value": ""
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"event_id\": \"pcfB7u9AgT\",\n  \"event_type\": \"form_response\",\n  \"form_response\": {\n    \"form_id\": \"H8mm3s\",\n    \"token\": \"a07c4897449af81e3624bcbe503133db\",\n    \"submitted_at\": \"2017-10-19T22:37:27Z\",\n    \"hidden\": {\n      \"email\": \"amitkumarvarman@gmail.com\",\n      \"name\": \"Amit Varman\",\n      \"phone\": \"09876512345\",\n      \"policy\": \"DU9876098\"\n    },\n    \"definition\": {\n      \"id\": \"H8mm3s\",\n      \"title\": \"Storm Surge\",\n      \"fields\": [\n        {\n          \"id\": \"63920548\",\n          \"title\": \"If there has been any recent maintenance carried out on your home, please describe it\",\n          \"type\": \"long_text\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"NBKeGLDeG1pa\",\n          \"title\": \"If you have any other insurance or warranties covering your home, please advise us of the company name.\",\n          \"type\": \"short_text\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"cWMGSX3JIi78\",\n          \"title\": \"We have made the following assumptions about your property, you and anyone living with you\",\n          \"type\": \"legal\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"nAz5fZvtiuLO\",\n          \"title\": \"When did the incident happen?\",\n          \"type\": \"date\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"kaRKsWGqupVP\",\n          \"title\": \"Are you still have possession of the damage items (i.e. damaged guttering)?\",\n          \"type\": \"yes_no\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"hhmzTJtsEobN\",\n          \"title\": \"Are you aware of anything else relevant to your claim that you would like to advise us of at this stage?\",\n          \"type\": \"long_text\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"63907334\",\n          \"title\": \"Would you like to upload more images?\",\n          \"type\": \"yes_no\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"64049754\",\n          \"title\": \"Where did the incident happen? (City/town name)\",\n          \"type\": \"short_text\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"ZSaL9YKNdYHe\",\n          \"title\": \"In as much detail as possible, please use the text box below to describe the full extent of the damage to your home and how you discovered it.\",\n          \"type\": \"long_text\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        },\n        {\n          \"id\": \"63920509\",\n          \"title\": \"Please describe the details of the condition of your home prior to discovering the damage\",\n          \"type\": \"long_text\",\n          \"allow_multiple_selections\": false,\n          \"allow_other_choice\": false\n        }\n      ]\n    },\n    \"answers\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"No maintenance carried out\",\n        \"field\": {\n          \"id\": \"63920548\",\n          \"type\": \"long_text\"\n        }\n      },\n      {\n        \"type\": \"text\",\n        \"text\": \"No\",\n        \"field\": {\n          \"id\": \"NBKeGLDeG1pa\",\n          \"type\": \"short_text\"\n        }\n      },\n      {\n        \"type\": \"boolean\",\n        \"boolean\": true,\n        \"field\": {\n          \"id\": \"cWMGSX3JIi78\",\n          \"type\": \"legal\"\n        }\n      },\n      {\n        \"type\": \"date\",\n        \"date\": \"2017-10-01\",\n        \"field\": {\n          \"id\": \"nAz5fZvtiuLO\",\n          \"type\": \"date\"\n        }\n      },\n      {\n        \"type\": \"boolean\",\n        \"boolean\": true,\n        \"field\": {\n          \"id\": \"kaRKsWGqupVP\",\n          \"type\": \"yes_no\"\n        }\n      },\n      {\n        \"type\": \"text\",\n        \"text\": \"I would need the vendors contact for repairing the roof\",\n        \"field\": {\n          \"id\": \"hhmzTJtsEobN\",\n          \"type\": \"long_text\"\n        }\n      },\n      {\n        \"type\": \"boolean\",\n        \"boolean\": false,\n        \"field\": {\n          \"id\": \"63907334\",\n          \"type\": \"yes_no\"\n        }\n      },\n      {\n        \"type\": \"text\",\n        \"text\": \"wales\",\n        \"field\": {\n          \"id\": \"64049754\",\n          \"type\": \"short_text\"\n        }\n      },\n      {\n        \"type\": \"text\",\n        \"text\": \"Roof Damaged\",\n        \"field\": {\n          \"id\": \"ZSaL9YKNdYHe\",\n          \"type\": \"long_text\"\n        }\n      },\n      {\n        \"type\": \"text\",\n        \"text\": \"Tiles blown away\",\n        \"field\": {\n          \"id\": \"63920509\",\n          \"type\": \"long_text\"\n        }\n      }\n    ]\n  }\n}"
+					"raw": "{\n    \"response\": {\n        \"version\": \"0.1\"\n    },\n    \"history\": {\n        \"dailysummary\": [\n            {\n                \"fog\": \"0\",\n                \"rain\": \"1\",\n                \"maxtempm\": \"17\",\n                \"mintempm\": \"12\",\n                \"tornado\": \"0\",\n                \"maxpressurem\": \"1014\",\n                \"minpressurem\": \"1005\",\n                \"maxwspdm\": \"50\",\n                \"minwspdm\": \"13\"\n            }\n        ]\n    }\n}"
 				},
 				"url": {
-					"raw": "http://fission.landg.madeden.net/transform-data",
+					"raw": "http://fission.landg.madeden.net/get-weather-risk",
 					"protocol": "http",
 					"host": [
 						"fission",
@@ -48,7 +48,7 @@
 						"net"
 					],
 					"path": [
-						"transform-data"
+						"get-weather-risk"
 					]
 				},
 				"description": ""
