@@ -11,8 +11,13 @@ import (
 var (
 	server *httptest.Server
 	//Test Data TV{"description":"Possible Stormy weather","riskScore":50}
-	userJson   = `{"history":{"dailysummary":[{"fog":"0","maxpressurem":"1025","maxtempm":"7","maxwspdm":"28","minpressurem":"1014","mintempm":"0","minwspdm":"7","rain":"1","tornado":"0"}]},"response":{"version":"0.1"}}`
-	outputJSON = `{"riskScore":60,"description":"Possibly stormy weather"}`
+	userJson60     = `{"history":{"dailysummary":[{"fog":"0","maxpressurem":"1025","maxtempm":"7","maxwspdm":"40","minpressurem":"1014","mintempm":"0","minwspdm":"7","rain":"1","tornado":"0"}]},"response":{"version":"0.1"}}`
+	userJson80     = `{"history":{"dailysummary":[{"fog":"0","maxpressurem":"1025","maxtempm":"7","maxwspdm":"70","minpressurem":"1014","mintempm":"0","minwspdm":"7","rain":"1","tornado":"0"}]},"response":{"version":"0.1"}}`
+	userJson20     = `{"history":{"dailysummary":[{"fog":"0","maxpressurem":"1025","maxtempm":"7","maxwspdm":"10","minpressurem":"1014","mintempm":"0","minwspdm":"7","rain":"1","tornado":"0"}]},"response":{"version":"0.1"}}`
+	outputJSON60   = `{"riskScore":60,"description":"Possibly stormy weather"}`
+	outputJSON80   = `{"riskScore":80,"description":"Stormy Weather identified"}`
+	outputJSON20   = `{"riskScore":20,"description":"Very less likelyhood of Storm"}`
+	emptyReqOutput = `{"status":"400","message":"EOF"}`
 	// ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr = httptest.NewRecorder()
 )
@@ -20,7 +25,10 @@ var (
 func TestHandler(t *testing.T) {
 	//Convert string to reader and
 	//Create request with JSON body
-	req, err := http.NewRequest("POST", "", strings.NewReader(userJson))
+	req20, err := http.NewRequest("POST", "", strings.NewReader(userJson20))
+	req60, err := http.NewRequest("POST", "", strings.NewReader(userJson60))
+	req80, err := http.NewRequest("POST", "", strings.NewReader(userJson80))
+	reqEmpty, err := http.NewRequest("POST", "", strings.NewReader(""))
 	if err != nil {
 		t.Error(err) //Something is wrong while sending request
 	}
@@ -35,7 +43,10 @@ func TestHandler(t *testing.T) {
 		args args
 		want string
 	}{
-		{"Test Data", args{rr, req}, outputJSON},
+		{"Test Data", args{rr, req20}, outputJSON20},
+		{"Test Data", args{rr, req60}, outputJSON60},
+		{"Test Data", args{rr, req80}, outputJSON80},
+		{"Test Data", args{rr, reqEmpty}, emptyReqOutput},
 	}
 	for _, tt := range tests {
 		// call ServeHTTP method

@@ -19,6 +19,7 @@ for any given date and city
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 )
@@ -30,20 +31,18 @@ type WeatherRiskData struct {
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 
-	if r.Body == nil {
-		http.Error(w, "Please send a valid JSON", 400)
-		return
-	}
+	fmt.Println("Executing Compute Weather Risk...")
+
 	var historicalData HistoricalData
 	err := json.NewDecoder(r.Body).Decode(&historicalData)
-	if err != nil {
-		http.Error(w, err.Error(), 400)
+	if err == io.EOF || err != nil {
+		createErrorResponse(w, err.Error(), "400")
 		return
 	}
 
 	//check if valid data returned
 	if len(historicalData.History.DailySummary) == 0 {
-		http.Error(w, "No results found", 400)
+		createErrorResponse(w, err.Error(), "400")
 		return
 	}
 	var weatherRiskData = WeatherRiskData{}
@@ -52,7 +51,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if maxWindSpeed > 20 && maxWindSpeed <= 40 {
 		weatherRiskData.RiskScore = 60
 		weatherRiskData.Description = "Possibly stormy weather"
-	} else if maxWindSpeed > 40 {
+	} else if maxWindSpeed > 50 {
 		weatherRiskData.RiskScore = 80
 		weatherRiskData.Description = "Stormy Weather identified"
 	} else {
@@ -63,13 +62,27 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	//marshal to JSON
 	weatherRiskDataJSON, err := json.Marshal(weatherRiskData)
 	if err != nil {
-		http.Error(w, err.Error(), 400)
+		createErrorResponse(w, err.Error(), "400")
 		return
 	}
 	fmt.Println(string(weatherRiskDataJSON))
 	w.Header().Set("content-type", "application/json")
 	w.Write([]byte(string(weatherRiskDataJSON)))
 
+}
+
+func createErrorResponse(w http.ResponseWriter, message string, status string) {
+	errorJSON, _ := json.Marshal(&Error{
+		Code:    status,
+		Message: message})
+	//Send custom error message to caller
+	w.Header().Set("content-type", "application/json")
+	w.Write([]byte(errorJSON))
+}
+
+type Error struct {
+	Code    string `json:"status"`
+	Message string `json:"message"`
 }
 
 //Model for WeatherAPI
@@ -98,8 +111,8 @@ type DailySummary struct {
 	Minwspdm     string `json:"minwspdm"`
 }
 
-func main() {
-	println("staritng app..")
-	http.HandleFunc("/", Handler)
-	http.ListenAndServe(":8088", nil)
-}
+// func main() {
+// 	println("staritng app..")
+// 	http.HandleFunc("/", Handler)
+// 	http.ListenAndServe(":8088", nil)
+// }
