@@ -18,31 +18,31 @@ for any given date and city
 */
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
 )
 
 type WeatherRiskData struct {
+	Status      int    `json:"status"`
 	RiskScore   int64  `json:"riskScore"`
 	Description string `json:"description"`
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println("Executing Compute Weather Risk...")
+	println("Executing Compute Weather Risk...")
 
 	var historicalData HistoricalData
 	err := json.NewDecoder(r.Body).Decode(&historicalData)
 	if err == io.EOF || err != nil {
-		createErrorResponse(w, err.Error(), "400")
+		createErrorResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	//check if valid data returned
 	if len(historicalData.History.DailySummary) == 0 {
-		createErrorResponse(w, err.Error(), "400")
+		createErrorResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	var weatherRiskData = WeatherRiskData{}
@@ -60,28 +60,31 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//marshal to JSON
+	weatherRiskData.Status = 200
 	weatherRiskDataJSON, err := json.Marshal(weatherRiskData)
 	if err != nil {
-		createErrorResponse(w, err.Error(), "400")
+		createErrorResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println(string(weatherRiskDataJSON))
+
+	println(string(weatherRiskDataJSON))
 	w.Header().Set("content-type", "application/json")
 	w.Write([]byte(string(weatherRiskDataJSON)))
 
 }
 
-func createErrorResponse(w http.ResponseWriter, message string, status string) {
+func createErrorResponse(w http.ResponseWriter, message string, status int) {
 	errorJSON, _ := json.Marshal(&Error{
-		Code:    status,
+		Status:  status,
 		Message: message})
 	//Send custom error message to caller
+	w.WriteHeader(status)
 	w.Header().Set("content-type", "application/json")
 	w.Write([]byte(errorJSON))
 }
 
 type Error struct {
-	Code    string `json:"status"`
+	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
 

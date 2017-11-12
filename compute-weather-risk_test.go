@@ -14,10 +14,10 @@ var (
 	userJson60     = `{"history":{"dailysummary":[{"fog":"0","maxpressurem":"1025","maxtempm":"7","maxwspdm":"40","minpressurem":"1014","mintempm":"0","minwspdm":"7","rain":"1","tornado":"0"}]},"response":{"version":"0.1"}}`
 	userJson80     = `{"history":{"dailysummary":[{"fog":"0","maxpressurem":"1025","maxtempm":"7","maxwspdm":"70","minpressurem":"1014","mintempm":"0","minwspdm":"7","rain":"1","tornado":"0"}]},"response":{"version":"0.1"}}`
 	userJson20     = `{"history":{"dailysummary":[{"fog":"0","maxpressurem":"1025","maxtempm":"7","maxwspdm":"10","minpressurem":"1014","mintempm":"0","minwspdm":"7","rain":"1","tornado":"0"}]},"response":{"version":"0.1"}}`
-	outputJSON60   = `{"riskScore":60,"description":"Possibly stormy weather"}`
-	outputJSON80   = `{"riskScore":80,"description":"Stormy Weather identified"}`
-	outputJSON20   = `{"riskScore":20,"description":"Very less likelyhood of Storm"}`
-	emptyReqOutput = `{"status":"400","message":"EOF"}`
+	outputJSON60   = `{"status":200,"riskScore":60,"description":"Possibly stormy weather"}`
+	outputJSON80   = `{"status":200,"riskScore":80,"description":"Stormy Weather identified"}`
+	outputJSON20   = `{"status":200,"riskScore":20,"description":"Very less likelyhood of Storm"}`
+	emptyReqOutput = `{"status":400,"message":"EOF"}`
 	// ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr = httptest.NewRecorder()
 )
