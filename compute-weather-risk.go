@@ -1,14 +1,32 @@
 package main
 
 /*
-This API will collect Weather Data by consuming
-Wunderground API and return summary for given date and city
+This API will compute Risk based on the Weather data provided
 
 --- INPUT ---
 
-Historical Weather Data received from Wunderground API
-for any given date and city
+JSON output data of Wundergroud History API
 
+{
+    "response": {
+        "version": "0.1"
+    },
+    "history": {
+        "dailysummary": [
+            {
+					 //
+					 //
+                "maxwspdm": "50",
+                "minwspdm": "13"
+            }
+        ],
+        "observations": [
+            {
+
+            }
+        ]
+    }
+}
 --- OUTPUT ---
 {
 	"RiskScore" : 70
@@ -23,16 +41,12 @@ import (
 	"strconv"
 )
 
-type WeatherRiskData struct {
-	Status      int    `json:"status"`
-	RiskScore   int64  `json:"riskScore"`
-	Description string `json:"description"`
-}
-
+// Handler funtion compute the Rsik for Stormy weather based on Wind Speed.
 func Handler(w http.ResponseWriter, r *http.Request) {
 
 	println("Executing Compute Weather Risk...")
 
+	//Process Post Data
 	var historicalData HistoricalData
 	err := json.NewDecoder(r.Body).Decode(&historicalData)
 	if err == io.EOF || err != nil {
@@ -45,6 +59,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		createErrorResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	//Create Reposne Struct
 	var weatherRiskData = WeatherRiskData{}
 	maxWindSpeed, err := strconv.Atoi(historicalData.History.DailySummary[0].Maxwspdm)
 
@@ -67,12 +83,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//write risk data to out stream
 	println(string(weatherRiskDataJSON))
 	w.Header().Set("content-type", "application/json")
 	w.Write([]byte(string(weatherRiskDataJSON)))
 
 }
 
+// createErrorResponse - this function forms a error reposne with
+// error message and http code
 func createErrorResponse(w http.ResponseWriter, message string, status int) {
 	errorJSON, _ := json.Marshal(&Error{
 		Status:  status,
@@ -83,9 +102,17 @@ func createErrorResponse(w http.ResponseWriter, message string, status int) {
 	w.Write([]byte(errorJSON))
 }
 
+// Error - error object
 type Error struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
+}
+
+// Output Data Model
+type WeatherRiskData struct {
+	Status      int    `json:"status"`
+	RiskScore   int64  `json:"riskScore"`
+	Description string `json:"description"`
 }
 
 //Model for WeatherAPI
